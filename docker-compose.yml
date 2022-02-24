@@ -1,0 +1,9 @@
+services:
+  conduit-api-dotnet:
+    image: gachlab/conduit-api:dotnet-latest
+    command: dotnet watch run   
+    build: 
+      dockerfile: ../Dockerfile
+      context: src/
+    volumes:
+      - ./src:/home/app
