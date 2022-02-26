@@ -13,5 +13,9 @@ namespace conduit_api_dotnet.Articles
             return articles.find();
         }
 
+        public override Task<Article> details(string id)
+        {
+            return articles.findOne(id);
+        }
     }
 }

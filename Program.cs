@@ -17,21 +17,22 @@ var ArticlesRepository = new conduit_api_dotnet.Articles.MemoryRepository(Articl
 var tagsData = JsonSerializer.Deserialize<ICollection<string>>(tagsJsonString).Select(tag => new conduit_api_dotnet.Tags.Tag() { name = tag.ToString() }).ToList();
 var TagsRepository = new conduit_api_dotnet.Tags.MemoryRepository(tagsData);
 
-var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddSingleton<conduit_api_dotnet.Articles.Repository>((services) => ArticlesRepository);
 builder.Services.AddSingleton<conduit_api_dotnet.Articles.UseCases>((services) => new conduit_api_dotnet.Articles.UseCasesStandard(ArticlesRepository));
-
 builder.Services.AddSingleton<conduit_api_dotnet.Tags.Repository>((services) => TagsRepository);
 builder.Services.AddSingleton<conduit_api_dotnet.Tags.UseCases>((services) => new conduit_api_dotnet.Tags.UseCasesStandard(TagsRepository));
-
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
