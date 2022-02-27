@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 using dotenv.net;
 
@@ -10,8 +11,8 @@ var ArticlesJsonString = envVars["CONDUIT_ARTICLES_DATA_JSON"];
 var tagsJsonString = envVars["CONDUIT_TAGS_DATA_JSON"];
 
 
-var ArticlesData = JsonSerializer.Deserialize<ICollection<conduit_api_dotnet.Articles.Article>>(ArticlesJsonString);
-var ArticlesRepository = new conduit_api_dotnet.Articles.MemoryRepository(ArticlesData);
+var ArticlesData = JsonSerializer.Deserialize<List<conduit_api_dotnet.Articles.Article>>(ArticlesJsonString);
+var ArticlesRepository = new conduit_api_dotnet.Articles.MemoryRepository(ArticlesData.ToDictionary(m => m.slug, m => m));
 
 
 var tagsData = JsonSerializer.Deserialize<ICollection<string>>(tagsJsonString).Select(tag => new conduit_api_dotnet.Tags.Tag() { name = tag.ToString() }).ToList();

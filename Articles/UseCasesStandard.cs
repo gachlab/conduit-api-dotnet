@@ -18,9 +18,58 @@ namespace conduit_api_dotnet.Articles
             return articles.findOne(id);
         }
 
-        public override Task<string> create(Article article)
+        public override Task<Article> create(Article article)
         {
-            return articles.insertOne(article);
+            if (article.title != null && article.title != "")
+            {
+                try
+                {
+                    article.slug = article.title.Replace(" ", "-").ToLower();
+
+                    var insertionDate = new DateTime();
+                    article.createdAt = insertionDate;
+                    article.updatedAt = insertionDate;
+                    articles.insertOne(article);
+                    return Task.FromResult<Article>(article);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+            }
+            else
+            {
+                throw new Exception("bad-request");
+            }
+
+        }
+
+        public override Task<Article> update(Article article)
+        {
+            try
+            {
+                articles.updateOne(article);
+                return Task.FromResult<Article>(article);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+
+        internal override Task remove(string id)
+        {
+            try
+            {
+                return articles.deleteOne(id);
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }
