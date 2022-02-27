@@ -17,5 +17,10 @@ namespace conduit_api_dotnet.Articles
         {
             return articles.findOne(id);
         }
+
+        public override Task<string> create(Article article)
+        {
+            return articles.insertOne(article);
+        }
     }
 }
