@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace conduit_api_dotnet.Tags;
+namespace Conduit.Tags;
 
 [ApiController]
 [Route("tags")]

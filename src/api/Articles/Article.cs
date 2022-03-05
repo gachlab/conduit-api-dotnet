@@ -1,4 +1,4 @@
-namespace conduit_api_dotnet.Articles
+namespace Conduit.Articles
 {
     public class Article
     {

@@ -1,4 +1,4 @@
-namespace conduit_api_dotnet.Tags
+namespace Conduit.Tags
 {
     public partial class UseCasesStandard : UseCases
     {

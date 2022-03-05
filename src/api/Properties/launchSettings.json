@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "conduit_api_dotnet": {
+    "Conduit": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
