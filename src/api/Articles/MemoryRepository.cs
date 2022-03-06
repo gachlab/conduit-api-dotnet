@@ -71,7 +71,7 @@ namespace Conduit.Articles
 
         }
 
-        internal override Task deleteOne(string id)
+        public override Task deleteOne(string id)
         {
             if (data.Remove(id))
             {

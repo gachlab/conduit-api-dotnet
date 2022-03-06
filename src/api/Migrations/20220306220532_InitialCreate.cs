@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Conduit.Migrations
 {
     public partial class InitialCreate : Migration
@@ -8,17 +10,30 @@ namespace Conduit.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Author",
+                name: "Tags",
                 columns: table => new
                 {
-                    username = table.Column<string>(type: "TEXT", nullable: false),
-                    bio = table.Column<string>(type: "TEXT", nullable: true),
-                    image = table.Column<string>(type: "TEXT", nullable: true),
-                    following = table.Column<bool>(type: "INTEGER", nullable: false)
+                    name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Author", x => x.username);
+                    table.PrimaryKey("PK_Tags", x => x.name);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    username = table.Column<string>(type: "TEXT", nullable: false),
+                    password = table.Column<string>(type: "TEXT", nullable: false),
+                    email = table.Column<string>(type: "TEXT", nullable: false),
+                    token = table.Column<string>(type: "TEXT", nullable: true),
+                    bio = table.Column<string>(type: "TEXT", nullable: true),
+                    image = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.username);
                 });
 
             migrationBuilder.CreateTable(
@@ -26,42 +41,46 @@ namespace Conduit.Migrations
                 columns: table => new
                 {
                     slug = table.Column<string>(type: "TEXT", nullable: false),
-                    title = table.Column<string>(type: "TEXT", nullable: true),
+                    title = table.Column<string>(type: "TEXT", nullable: false),
                     description = table.Column<string>(type: "TEXT", nullable: true),
                     body = table.Column<string>(type: "TEXT", nullable: true),
                     createdAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     updatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    favorited = table.Column<bool>(type: "INTEGER", nullable: false),
-                    favoritesCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    authorusername = table.Column<string>(type: "TEXT", nullable: true)
+                    authorusername = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.slug);
                     table.ForeignKey(
-                        name: "FK_Articles_Author_authorusername",
+                        name: "FK_Articles_Users_authorusername",
                         column: x => x.authorusername,
-                        principalTable: "Author",
+                        principalTable: "Users",
                         principalColumn: "username",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tags",
+                name: "ArticleTag",
                 columns: table => new
                 {
-                    name = table.Column<string>(type: "TEXT", nullable: false),
-                    Articleslug = table.Column<string>(type: "TEXT", nullable: true)
+                    articlesslug = table.Column<string>(type: "TEXT", nullable: false),
+                    tagListname = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tags", x => x.name);
+                    table.PrimaryKey("PK_ArticleTag", x => new { x.articlesslug, x.tagListname });
                     table.ForeignKey(
-                        name: "FK_Tags_Articles_Articleslug",
-                        column: x => x.Articleslug,
+                        name: "FK_ArticleTag_Articles_articlesslug",
+                        column: x => x.articlesslug,
                         principalTable: "Articles",
                         principalColumn: "slug",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArticleTag_Tags_tagListname",
+                        column: x => x.tagListname,
+                        principalTable: "Tags",
+                        principalColumn: "name",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -70,21 +89,24 @@ namespace Conduit.Migrations
                 column: "authorusername");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_Articleslug",
-                table: "Tags",
-                column: "Articleslug");
+                name: "IX_ArticleTag_tagListname",
+                table: "ArticleTag",
+                column: "tagListname");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "ArticleTag");
 
             migrationBuilder.DropTable(
                 name: "Articles");
 
             migrationBuilder.DropTable(
-                name: "Author");
+                name: "Tags");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

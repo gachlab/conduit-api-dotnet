@@ -1,2 +1,4 @@
 obj/
 bin/
+conduit.db
+conduit.db*

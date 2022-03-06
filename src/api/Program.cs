@@ -23,16 +23,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<Conduit.Articles.Sql.DbContextSqlLite>(options =>
+
+builder.Services.AddDbContext<Conduit.Sql.AppDbContext>(options =>
 {
     options.UseSqlite("Data Source=conduit.db");
 });
 
 
-builder.Services.AddSingleton<Conduit.Articles.Repository,Conduit.Articles.EntityFrameworkRepository>();
-builder.Services.AddSingleton<Conduit.Articles.UseCases,Conduit.Articles.UseCasesStandard>();
-// builder.Services.AddSingleton<Conduit.Tags.Repository>((services) => TagsRepository);
-// builder.Services.AddSingleton<Conduit.Tags.UseCases>((services) => new Conduit.Tags.UseCasesStandard(TagsRepository));
+builder.Services.AddScoped<Conduit.Articles.Repository, Conduit.Articles.EntityFrameworkRepository>();
+builder.Services.AddScoped<Conduit.Articles.UseCases, Conduit.Articles.UseCasesStandard>();
+builder.Services.AddScoped<Conduit.Users.Repository, Conduit.Users.EntityFrameworkRepository>();
+builder.Services.AddScoped<Conduit.Users.UseCases, Conduit.Users.UseCasesStandard>();
+// builder.Services.AddSingleton<Conduit.Tags.Repository>((provider) => TagsRepository);
+// builder.Services.AddSingleton<Conduit.Tags.UseCases, Conduit.Tags.UseCasesStandard>();
+
 builder.Services.AddControllers();
 
 
